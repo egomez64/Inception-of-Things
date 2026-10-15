@@ -1,0 +1,21 @@
+SERVER_IP = "192.168.56.110"
+SERVER_NAME = "egomezS"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/debian-13"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 1
+  end
+
+  config.vm.define SERVER_NAME do |server|
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
+      vb.name = SERVER_NAME
+    end
+    server.vm.hostname = SERVER_NAME
+    server.vm.network "private_network", ip: SERVER_IP
+    server.vm.provision "shell", path: "scripts/server.sh", args: [SERVER_IP]
+  end
+end
